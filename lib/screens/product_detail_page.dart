@@ -12,7 +12,11 @@ class ProductDetailPage extends StatelessWidget {
     final ProductService service = ProductService();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Product $id")),
+      appBar: AppBar(
+        title: Text("Product $id"),
+        centerTitle: true,
+        elevation: 2,
+      ),
       body: FutureBuilder<Product>(
         future: service.getProduct(id),
         builder: (context, snapshot) {
@@ -24,23 +28,55 @@ class ProductDetailPage extends StatelessWidget {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
 
-          final product = snapshot.data!;
+          final p = snapshot.data!;
 
-          return Padding(
-            padding: const EdgeInsets.all(16),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  product.title,
-                  style:
-                      const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    p.thumbnail,
+                    height: 260,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                Text("Price: \$${product.price}"),
-                Text("Rating: ⭐ ${product.rating}"),
                 const SizedBox(height: 20),
-                Expanded(child: Image.network(product.thumbnail)),
+                Text(
+                  p.title,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "₦${p.price}",
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber, size: 24),
+                    const SizedBox(width: 6),
+                    Text(
+                      p.rating.toString(),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  "This product features exceptional build quality, reliability, and value. "
+                  "Engineered to meet modern needs with a refined, premium finish.",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                ),
               ],
             ),
           );

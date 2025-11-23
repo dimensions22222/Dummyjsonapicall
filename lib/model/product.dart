@@ -4,6 +4,7 @@ class Product {
   final double price;
   final double rating;
   final String thumbnail;
+  final String category; // Added category
 
   Product({
     required this.id,
@@ -11,6 +12,7 @@ class Product {
     required this.price,
     required this.rating,
     required this.thumbnail,
+    required this.category,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Product {
       price: (json["price"] as num).toDouble(),
       rating: (json["rating"] as num).toDouble(),
       thumbnail: json["thumbnail"] ?? "",
+      category: json["category"] ?? "Uncategorized",
     );
   }
 }
